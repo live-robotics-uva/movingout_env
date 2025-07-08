@@ -1,0 +1,8 @@
+matplotlib==3.10.3
+numpy
+opencv_python==4.10.0.84
+pygame==2.6.1
+pymunk==6.8.1
+PyYAML==6.0.2
+tqdm==4.66.5
+gymnasium==0.29.1

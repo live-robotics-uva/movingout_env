@@ -1,0 +1,71 @@
+sparse:
+  step_cost: -0.001
+  small_items:
+    move_items_to_target_areas: 1.0
+    move_item_out_of_target_areas: -1.0
+    move_items_to_target_areas_rewards_to_the_other: 0.0
+    move_item_out_of_target_areas_rewards_to_the_other: 0.0
+  middle_and_large:
+    move_items_to_target_areas: 1.0
+    move_item_out_of_target_areas: -1.0
+    move_items_to_target_areas_rewards_to_the_other: 0.0
+    move_item_out_of_target_areas_rewards_to_the_other: 0.0
+
+mixed:
+  step_cost: -0.001
+  small_items:
+    move_items_to_target_areas: 1.0
+    move_item_out_of_target_areas: -1.0
+    scale_for_agents_get_closer_to_cloest_small_items: 1.0
+    move_items_to_target_areas_rewards_to_the_other: 0.0
+    move_item_out_of_target_areas_rewards_to_the_other: 0.0
+  middle_and_large:
+    move_items_to_target_areas: 1.0
+    move_item_out_of_target_areas: -1.0
+    scale_for_agents_get_closer_to_cloest_small_items: 1.0
+    move_items_to_target_areas_rewards_to_the_other: 0.0
+    move_item_out_of_target_areas_rewards_to_the_other: 0.0
+  
+dense:
+  step_cost: -0.001
+  small_items:
+    move_items_to_target_areas: 20.0
+    move_items_to_target_areas_rewards_to_the_other: 1.0
+
+    move_item_out_of_target_areas: -20.0
+    move_item_out_of_target_areas_rewards_to_the_other: 0.0
+
+    scale_for_agents_get_closer_to_cloest_small_items: 1.0
+    unhold_small_items_which_not_inside_target_area: -5
+    hold_small_items_which_not_inside_target_area: 5
+
+    hold_small_items_in_target_areas: -10.0
+    unhold_small_items_in_target_areas: 10.0
+
+  middle_and_large:
+    move_items_to_target_areas: 20.0
+    move_item_out_of_target_areas: -20.0
+
+    scale_for_agents_get_closer_to_target_middle_large_or_target_area: 20.0
+
+    hold_large_items_in_target_areas: -10.0
+    unhold_large_items_in_target_areas: 10.0
+
+    # For single agent
+    unhold_items_which_not_inside_target_area: -5
+    hold_items_which_not_inside_target_area: 5
+    hold_items_but_different_with_the_other: -10.0
+
+    #Currentlly does not support  For both agents
+    if_two_agents_hold_same_item_not_in_target_area: 10.0
+    if_two_agents_unhold_same_item_not_in_target_area: -10.0
+
+    #Currentlly does not support
+    if_two_agents_hold_item_in_diagonal: 1.0
+    if_two_agents_unhold_item_in_diagonal_and_not_in_target_area: -1.0
+
+  middle_items:
+    TBD: 0
+
+  large_items:
+    TBD: 0
