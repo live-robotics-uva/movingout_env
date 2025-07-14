@@ -68,8 +68,17 @@ To add a custom map:
 2. Create a new `.json` file describing your custom map.
 3. Add the new map name to `AVAILABLE_MAPS` in `moving_out/env_parameters.py`.
 
+
+
+## Acknowledgements
+
+This environment is built upon the foundations of the following projects:
+
+* [MAGICAL](https://github.com/qxcv/magical)
+* [X-MAGICAL](https://github.com/kevinzakka/x-magical)
+
+We thank the authors for their contributions.
+
 ---
 
 For issues or contributions, feel free to open an issue or pull request on GitHub.
-
-Happy collaborating!
