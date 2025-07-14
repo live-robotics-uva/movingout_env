@@ -1,124 +1,117 @@
 {
-    "0": {
-        "evaluate_collision": false,
-        "evaluate_awareness": true,
-        "evaluate_consistency": false,
-        "arena_size": [
-            1.2,
-            1.2
+    "arena_size": [
+        1.2,
+        1.2
+    ],
+    "robot_1_pos": [
+        -1.0,
+        0
+    ],
+    "robot_1_angle": -1.57,
+    "robot_1_hold": false,
+    "robot_2_pos": [
+        1.0,
+        0
+    ],
+    "robot_2_angle": 1.57,
+    "robot_2_hold": false,
+    "walls": [
+        [
+            null
         ],
-        "number_rooms": 2,
-        "layout_id": 0,
-        "robot_1_pos": [
-            -1.0,
-            0
+        [
+            null
         ],
-        "robot_1_angle": -1.57,
-        "robot_1_hold": false,
-        "robot_2_pos": [
-            1.0,
-            0
+        [
+            null
         ],
-        "robot_2_angle": 1.57,
-        "robot_2_hold": false,
-        "walls": [
-            [
-                null
+        [
+            null
+        ]
+    ],
+    "objects": {
+        "0": {
+            "pos": [
+                0.8,
+                0.8
             ],
-            [
-                null
-            ],
-            [
-                null
-            ],
-            [
-                null
-            ]
-        ],
-        "objects": {
-            "0": {
-                "pos": [
-                    0.8,
-                    0.8
-                ],
-                "angle": 0.8815208911864437,
-                "shape": "square",
-                "hold": false,
-                "color": "red",
-                "size": "large",
-"mass": 0.5,
-                "shape_scale": 0.17
-            },
-            "1": {
-                "pos": [
-                    0.8,
-                    -0.8
-                ],
-                "angle": 0.8815208911864437,
-                "shape": "circle",
-                "hold": false,
-                "color": "blue",
-                "size": "large",
-"mass": 0.5,
-                "shape_scale": 0.17
-            },
-            "2": {
-                "pos": [
-                    -0.8,
-                    0.8
-                ],
-                "angle": 0.8815208911864437,
-                "shape": "star",
-                "hold": false,
-                "color": "green",
-                "size": "large",
-"mass": 0.5,
-                "shape_scale": 0.17
-            },
-            "3": {
-                "pos": [
-                    -0.8,
-                    -0.8
-                ],
-                "angle": 0.8815208911864437,
-                "shape": "hexagon",
-                "hold": false,
-                "color": "yellow",
-                "size": "large",
-"mass": 0.5,
-                "shape_scale": 0.17
-            },
-            "4": null,
-            "5": null,
-            "6": null,
-            "7": null
+            "angle": 0.8815208911864437,
+            "shape": "square",
+            "hold": false,
+            "color": "red",
+            "size": "large",
+            "mass": 0.5,
+            "shape_scale": 0.17
         },
-        "target_areas": [
-            [
-                -1.2,
-                0.3,
-                0.6,
-                0.6
+        "1": {
+            "pos": [
+                0.8,
+                -0.8
             ],
-            [
-                0.6,
-                0.3,
-                0.6,
-                0.6
+            "angle": 0.8815208911864437,
+            "shape": "circle",
+            "hold": false,
+            "color": "blue",
+            "size": "large",
+            "mass": 0.5,
+            "shape_scale": 0.17
+        },
+        "2": {
+            "pos": [
+                -0.8,
+                0.8
             ],
-            [
-                -0.3,
-                1.2,
-                0.6,
-                0.6
+            "angle": 0.8815208911864437,
+            "shape": "star",
+            "hold": false,
+            "color": "green",
+            "size": "large",
+            "mass": 0.5,
+            "shape_scale": 0.17
+        },
+        "3": {
+            "pos": [
+                -0.8,
+                -0.8
             ],
-            [
-                -0.3,
-                -0.6,
-                0.6,
-                0.6
-            ]
+            "angle": 0.8815208911864437,
+            "shape": "hexagon",
+            "hold": false,
+            "color": "yellow",
+            "size": "large",
+            "mass": 0.5,
+            "shape_scale": 0.17
+        },
+        "4": null,
+        "5": null,
+        "6": null,
+        "7": null
+    },
+    "target_areas": [
+        [
+            -1.2,
+            0.3,
+            0.6,
+            0.6
         ],
-        "target_color": "blue"
-    }
+        [
+            0.6,
+            0.3,
+            0.6,
+            0.6
+        ],
+        [
+            -0.3,
+            1.2,
+            0.6,
+            0.6
+        ],
+        [
+            -0.3,
+            -0.6,
+            0.6,
+            0.6
+        ]
+    ],
+    "target_color": "blue"
 }

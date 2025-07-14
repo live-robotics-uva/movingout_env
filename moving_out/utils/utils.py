@@ -136,7 +136,7 @@ def reset_env_to_id(env, map_name, add_noise_to_item=None):
     json_data = read_json_files(map_path)
     if add_noise_to_item:
         json_data = add_noise_to_map(json_data, map_name)
-    config = json_data["0"]
+    config = json_data
     env.on_reset(
         robot_1_pos=config["robot_1_pos"],
         robot_1_angle=config["robot_1_angle"],

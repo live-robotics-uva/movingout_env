@@ -47,7 +47,7 @@ class StatesEncoder:
                                 f"File {filename} is not a valid JSON file, skipping."
                             )
             valid_objects = [
-                x for x in json_files_data[0]["0"]["objects"].values() if x is not None
+                x for x in json_files_data[0]["objects"].values() if x is not None
             ]
             return valid_objects
 

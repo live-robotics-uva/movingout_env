@@ -1,150 +1,143 @@
 {
-    "0": {
-        "evaluate_collision": false,
-        "evaluate_awareness": true,
-        "evaluate_consistency": false,
-        "arena_size": [
-            1.2,
-            1.2
-        ],
-        "number_rooms": 2,
-        "layout_id": 0,
-        "robot_1_pos": [
-            -0.15,
-            0.15
-        ],
-        "robot_1_angle": 0,
-        "robot_1_hold": false,
-        "robot_2_pos": [
-            0.15,
-            -0.15
-        ],
-        "robot_2_angle": 3.14,
-        "robot_2_hold": false,
-        "walls": [
+    "arena_size": [
+        1.2,
+        1.2
+    ],
+    "robot_1_pos": [
+        -0.15,
+        0.15
+    ],
+    "robot_1_angle": 0,
+    "robot_1_hold": false,
+    "robot_2_pos": [
+        0.15,
+        -0.15
+    ],
+    "robot_2_angle": 3.14,
+    "robot_2_hold": false,
+    "walls": [
+        [
             [
-                [
-                    -0.2,
-                    1.2
-                ],
-                [
-                    0.2,
-                    0.8
-                ]
+                -0.2,
+                1.2
             ],
             [
-                [
-                    -0.2,
-                    -1.2
-                ],
-                [
-                    0.2,
-                    -0.8
-                ]
-            ],
-            [
-                null
-            ],
-            [
-                null
+                0.2,
+                0.8
             ]
         ],
-        "objects": {
-            "0": {
-                "pos": [
-                    0.5,
-                    1.0
-                ],
-                "angle": 0.6671094701631904,
-                "shape": "circle",
-                "hold": false,
-                "color": "green",
-                "size": "small",
-"mass": 0.1,
-                "shape_scale": 0.06
-            },
-            "1": {
-                "pos": [
-                    0.75,
-                    1.0
-                ],
-                "angle": 0.5028381768366248,
-                "shape": "square",
-                "hold": false,
-                "color": "blue",
-                "size": "middle",
-"mass": 0.5,
-                "shape_scale": 0.11
-            },
-            "2": {
-                "pos": [
-                    1.0,
-                    1.0
-                ],
-                "angle": 0.6671094701631904,
-                "shape": "star",
-                "hold": false,
-                "color": "red",
-                "size": "small",
-"mass": 0.1,
-                "shape_scale": 0.06
-            },
-            "3": {
-                "pos": [
-                    -0.5,
-                    -1.0
-                ],
-                "angle": 0.6671094701631904,
-                "shape": "circle",
-                "hold": false,
-                "color": "green",
-                "size": "small",
-"mass": 0.1,
-                "shape_scale": 0.06
-            },
-            "4": {
-                "pos": [
-                    -0.75,
-                    -1.0
-                ],
-                "angle": 0.5028381768366248,
-                "shape": "square",
-                "hold": false,
-                "color": "blue",
-                "size": "middle",
-"mass": 0.5,
-                "shape_scale": 0.11
-            },
-            "5": {
-                "pos": [
-                    -1.0,
-                    -1.0
-                ],
-                "angle": 0.6671094701631904,
-                "shape": "star",
-                "hold": false,
-                "color": "red",
-                "size": "small",
-"mass": 0.1,
-                "shape_scale": 0.06
-            },
-            "6": null,
-            "7": null
+        [
+            [
+                -0.2,
+                -1.2
+            ],
+            [
+                0.2,
+                -0.8
+            ]
+        ],
+        [
+            null
+        ],
+        [
+            null
+        ]
+    ],
+    "objects": {
+        "0": {
+            "pos": [
+                0.5,
+                1.0
+            ],
+            "angle": 0.6671094701631904,
+            "shape": "circle",
+            "hold": false,
+            "color": "green",
+            "size": "small",
+            "mass": 0.1,
+            "shape_scale": 0.06
         },
-        "target_areas": [
-            [
-                -1.2,
-                1.2,
-                0.4,
-                0.6
+        "1": {
+            "pos": [
+                0.75,
+                1.0
             ],
-            [
-                0.6,
-                -0.8,
-                0.4,
-                0.6
-            ]
+            "angle": 0.5028381768366248,
+            "shape": "square",
+            "hold": false,
+            "color": "blue",
+            "size": "middle",
+            "mass": 0.5,
+            "shape_scale": 0.11
+        },
+        "2": {
+            "pos": [
+                1.0,
+                1.0
+            ],
+            "angle": 0.6671094701631904,
+            "shape": "star",
+            "hold": false,
+            "color": "red",
+            "size": "small",
+            "mass": 0.1,
+            "shape_scale": 0.06
+        },
+        "3": {
+            "pos": [
+                -0.5,
+                -1.0
+            ],
+            "angle": 0.6671094701631904,
+            "shape": "circle",
+            "hold": false,
+            "color": "green",
+            "size": "small",
+            "mass": 0.1,
+            "shape_scale": 0.06
+        },
+        "4": {
+            "pos": [
+                -0.75,
+                -1.0
+            ],
+            "angle": 0.5028381768366248,
+            "shape": "square",
+            "hold": false,
+            "color": "blue",
+            "size": "middle",
+            "mass": 0.5,
+            "shape_scale": 0.11
+        },
+        "5": {
+            "pos": [
+                -1.0,
+                -1.0
+            ],
+            "angle": 0.6671094701631904,
+            "shape": "star",
+            "hold": false,
+            "color": "red",
+            "size": "small",
+            "mass": 0.1,
+            "shape_scale": 0.06
+        },
+        "6": null,
+        "7": null
+    },
+    "target_areas": [
+        [
+            -1.2,
+            1.2,
+            0.4,
+            0.6
         ],
-        "target_color": "blue"
-    }
+        [
+            0.6,
+            -0.8,
+            0.4,
+            0.6
+        ]
+    ],
+    "target_color": "blue"
 }

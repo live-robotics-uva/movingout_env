@@ -1,75 +1,70 @@
 {
-    "0": {
-        "evaluate_collision": false,
-        "evaluate_awareness": true,
-        "evaluate_consistency": false,
-        "arena_size": [
-            1.2,
-            1.2
-        ],
-        "number_rooms": 2,
-        "layout_id": 0,
-        "robot_1_pos": [
-            0.4,
-            -0.4
-        ],
-        "robot_1_angle": 1.57,
-        "robot_1_hold": false,
-        "robot_2_pos": [
-            0.4,
-            -0.8
-        ],
-        "robot_2_angle": 1.57,
-        "robot_2_hold": false,
-        "walls": [
+    "arena_size": [
+        1.2,
+        1.2
+    ],
+    "robot_1_pos": [
+        0.4,
+        -0.4
+    ],
+    "robot_1_angle": 1.57,
+    "robot_1_hold": false,
+    "robot_2_pos": [
+        0.4,
+        -0.8
+    ],
+    "robot_2_angle": 1.57,
+    "robot_2_hold": false,
+    "walls": [
+        [
             [
-                [
-                    -1.2,
-                    -0.15
-                ],
-                [
-                    0.75,
-                    -0.21
-                ]
+                -1.2,
+                -0.15
             ],
             [
-                null
-            ],
-            [
-                null
-            ],
-            [
-                null
+                0.75,
+                -0.21
             ]
         ],
-        "objects": {
-            "0": {
-                "pos": [
-                    -0.6,
-                    -0.7
-                ],
-                "angle": 0,
-                "shape": "rectangle",
-                "hold": false,
-                "color": "yellow",
-                "size": "large",
-"mass": 0.5,
-                "shape_scale": 0.20
-            },
-            "1": null,
-            "2": null,
-            "3": null,
-            "4": null,
-            "5": null,
-            "6": null,
-            "7": null
+        [
+            null
+        ],
+        [
+            null
+        ],
+        [
+            null
+        ]
+    ],
+    "objects": {
+        "0": {
+            "pos": [
+                -0.6,
+                -0.7
+            ],
+            "angle": 0,
+            "shape": "rectangle",
+            "hold": false,
+            "color": "yellow",
+            "size": "large",
+            "mass": 0.5,
+            "shape_scale": 0.20
         },
-        "target_areas": [[
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": null,
+        "5": null,
+        "6": null,
+        "7": null
+    },
+    "target_areas": [
+        [
             -1.2,
             1.2,
             0.85,
             0.85
-        ]],
-        "target_color": "blue"
-    }
+        ]
+    ],
+    "target_color": "blue"
 }
