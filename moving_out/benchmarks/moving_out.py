@@ -33,9 +33,9 @@ class MovingOutEnv(BaseEnv):
             use_state: Whether to use states rather than pixels for the
                 observation space.
             use_dense_reward: Whether to use a dense reward or a sparse one.
-            rand_layout_full: Whether to randomize the poses of the debris.
-            rand_shapes: Whether to randomize the shapes of the debris.
-            rand_colors: Whether to randomize the colors of the debris and the
+            rand_layout_full: Whether to randomize the poses of the items.
+            rand_shapes: Whether to randomize the shapes of the items.
+            rand_colors: Whether to randomize the colors of the items and the
                 goal zone.
         """
         self.states_convertor = StatesEncoder()
@@ -104,7 +104,7 @@ class MovingOutEnv(BaseEnv):
                     else None
                 ),
             },
-            "debris": [
+            "items": [
                 {
                     "pos": list(shape.shape_body.position),
                     "angle": shape.shape_body.angle,
@@ -117,7 +117,7 @@ class MovingOutEnv(BaseEnv):
                     "color": shape.color,
                     "id": shape.object_id,
                 }
-                for shape in self.__debris_shapes
+                for shape in self.__items_shapes
             ],
             "target_area": self.target_areas,
             "target_color": self.target_color,
@@ -195,7 +195,7 @@ class MovingOutEnv(BaseEnv):
                 formated_objects[str(obj["id"])] = obj
             return formated_objects
 
-        formated_objects = format_objects(states_dict["states"]["debris"])
+        formated_objects = format_objects(states_dict["states"]["items"])
         # self.on_reset(
         #     robot_1_pos,
         #     robot_1_angle,
@@ -231,22 +231,22 @@ class MovingOutEnv(BaseEnv):
             "angular_velocity"
         ]
 
-        for i, shape in enumerate(self.__debris_shapes):
-            # self.__debris_shapes[i].shape_body.position = [0, 0]
-            self.__debris_shapes[i].shape_body.position = states_dict["states"][
-                "debris"
+        for i, shape in enumerate(self.__items_shapes):
+            # self.__items_shapes[i].shape_body.position = [0, 0]
+            self.__items_shapes[i].shape_body.position = states_dict["states"][
+                "items"
             ][i]["pos"]
-            self.__debris_shapes[i].shape_body.angle = states_dict["states"]["debris"][
+            self.__items_shapes[i].shape_body.angle = states_dict["states"]["items"][
                 i
             ]["angle"]
-            self.__debris_shapes[i].shape_body.hold = [False, False]
-            self.__debris_shapes[i].shape_body.velocity = states_dict["states"][
-                "debris"
+            self.__items_shapes[i].shape_body.hold = [False, False]
+            self.__items_shapes[i].shape_body.velocity = states_dict["states"][
+                "items"
             ][i]["velocity"]
-            self.__debris_shapes[i].shape_body.angular_velocity = states_dict["states"][
-                "debris"
+            self.__items_shapes[i].shape_body.angular_velocity = states_dict["states"][
+                "items"
             ][i]["angular_velocity"]
-            self.__debris_shapes[i].shape_body.body_type = pm.Body.DYNAMIC
+            self.__items_shapes[i].shape_body.body_type = pm.Body.DYNAMIC
 
         if robot_1_hold:
             shape_in_front = self.check_for_object_in_front(
@@ -302,7 +302,7 @@ class MovingOutEnv(BaseEnv):
                 objects[str(i)]["id"] = i
                 valid_shapes.append(objects[str(i)])
 
-        self.__debris_shapes = [
+        self.__items_shapes = [
             self._make_shape(
                 shape_type=_shape["shape"],
                 color_name=_shape["color"],
@@ -317,7 +317,7 @@ class MovingOutEnv(BaseEnv):
             for _shape in valid_shapes
         ]
 
-        self.add_entities(self.__debris_shapes)
+        self.add_entities(self.__items_shapes)
         # Add robot last for draw order reasons.
         self.add_entities([robot_1, robot_2])
 
@@ -326,7 +326,7 @@ class MovingOutEnv(BaseEnv):
         robot_1.shape.collision_type = 1
         robot_2.shape.collision_type = 1
 
-        for shape in self.__debris_shapes:
+        for shape in self.__items_shapes:
             shape.shapes[0].collision_type = 2
 
         handler = self._space.add_collision_handler(2, 2)
@@ -335,7 +335,7 @@ class MovingOutEnv(BaseEnv):
         handler.post_solve = self.post_solve
 
         # Block lookup index.
-        self.__ent_index = en.EntityIndex(self.__debris_shapes)
+        self.__ent_index = en.EntityIndex(self.__items_shapes)
 
     def add_walls(self, walls):
         for wall in walls:
@@ -381,9 +381,9 @@ class MovingOutEnv(BaseEnv):
         return overlap_ents
 
     def global_score(self) -> float:
-        # score = number of debris entirely contained in goal zone / 3
+        # score = number of items entirely contained in goal zone / 3
         overlap_ents = self.get_overlapped_items()
-        target_set = set(self.__debris_shapes)
+        target_set = set(self.__items_shapes)
         n_overlap_targets = len(target_set & overlap_ents)
         if n_overlap_targets != 0:
             _ = 1 + 1
@@ -478,7 +478,7 @@ class MovingOutEnv(BaseEnv):
         shape_category = {"small": [0, 0], "middle": [0, 0], "large": [0, 0]}
         for i in list(self.get_overlapped_items()):
             shape_category[i.shape_category][0] += 1
-        for i in list(self.__debris_shapes):
+        for i in list(self.__items_shapes):
             shape_category[i.shape_category][1] += 1
         return shape_category
 
@@ -589,7 +589,7 @@ class MovingOutEnv(BaseEnv):
         robot_id=0,
     ):
         if self.map_name == 2005 or self.map_name == 2006:
-            items_positions = self.get_all_states()["debris"]
+            items_positions = self.get_all_states()["items"]
             two_pos = items_positions[0]["pos"]
             angle = items_positions[0]["angle"]
 
@@ -723,16 +723,16 @@ class MovingOutEnv(BaseEnv):
             self.rewards_config = yaml.load(f, Loader=yaml.FullLoader)[reward_setting]
 
     def get_item_by_id(self, id):
-        for item in self.__debris_shapes:
+        for item in self.__items_shapes:
             if item.object_id == id:
                 return item
         return None
 
     def get_distance_of_all_items_to_target_areas(self):
         states = self.get_all_states()
-        all_debris_pos = [x["pos"] for x in states["debris"]]
+        all_items_pos = [x["pos"] for x in states["items"]]
         dis_sum = 0
-        for pos in all_debris_pos:
+        for pos in all_items_pos:
             dis_sum += self.get_distance_to_target_areas(pos)
         return dis_sum
 
@@ -746,7 +746,7 @@ class MovingOutEnv(BaseEnv):
         return 1 - distance / self.init_distance_to_target_areas
 
     def _dense_reward(self) -> float:
-        """Mean distance of all debris entitity positions to goal zone."""
+        """Mean distance of all items entitity positions to goal zone."""
 
         if self.reward_setting == "sparse":
             print("Reward Setting is Sparse, no dense reward")
@@ -774,44 +774,44 @@ class MovingOutEnv(BaseEnv):
                 [-math.sin(last_angle), math.cos(last_angle)]
             )
             # print(np.array(current_state[agent]["pos"]), "--" ,last_front_pos)
-            current_debris = [
-                x for x in list(current_state["debris"]) if (((not x["hold"][1 - i])))
+            current_items = [
+                x for x in list(current_state["items"]) if (((not x["hold"][1 - i])))
             ]
-            last_debris = [
-                x for x in list(last_state["debris"]) if (((not x["hold"][1 - i])))
+            last_items = [
+                x for x in list(last_state["items"]) if (((not x["hold"][1 - i])))
             ]
 
-            current_debris_ids = [x["id"] for x in current_debris]
-            last_debris_ids = [x["id"] for x in last_debris]
+            current_items_ids = [x["id"] for x in current_items]
+            last_items_ids = [x["id"] for x in last_items]
 
             valid_id = []
-            for id in current_debris_ids:
-                if id in last_debris_ids:
+            for id in current_items_ids:
+                if id in last_items_ids:
                     valid_id.append(id)
 
             overlapped_items = self.get_overlapped_items()
             overlapped_items_ids = [x.object_id for x in overlapped_items]
 
-            filted_current_debris = [
+            filted_current_items = [
                 x
-                for x in current_debris
+                for x in current_items
                 if x["id"] in valid_id and x["id"] not in overlapped_items_ids
             ]
-            filted_last_debris = [
+            filted_last_items = [
                 x
-                for x in last_debris
+                for x in last_items
                 if x["id"] in valid_id and x["id"] not in overlapped_items_ids
             ]
 
             current_cloest_distance = self.get_distance_to_closest_item(
                 current_front_pos,
-                filted_current_debris,
+                filted_current_items,
                 self.distance_caluclation,
                 robot_id=i,
             )
             last_cloest_distance = self.get_distance_to_closest_item(
                 last_front_pos,
-                filted_last_debris,
+                filted_last_items,
                 self.distance_caluclation,
                 robot_id=i,
             )
@@ -916,8 +916,8 @@ class MovingOutEnv(BaseEnv):
                 overlapped_items = self.get_overlapped_items()
                 overlapped_items_ids = [x.object_id for x in overlapped_items]
 
-                # current_all_debris_id_pos = {x["id"]:x["pos"] for x in list(current_state["debris"])}
-                # last_all_debris_id_pos = {x["id"]:x["pos"] for x in list(last_state["debris"])}
+                # current_all_items_id_pos = {x["id"]:x["pos"] for x in list(current_state["items"])}
+                # last_all_items_id_pos = {x["id"]:x["pos"] for x in list(last_state["items"])}
                 if (
                     current_state[agents[1 - i]]["holded_item_category"] == "middle"
                     or current_state[agents[1 - i]]["holded_item_category"] == "large"
@@ -992,7 +992,7 @@ class MovingOutEnv(BaseEnv):
                     current_state[agent]["holded_item_pos"]
                 )
                 id = current_state[agent]["holded_item_id"]
-                for item in last_state["debris"]:
+                for item in last_state["items"]:
                     if item["id"] == id:
                         last_item_pos = item["pos"]
                         break
@@ -1062,7 +1062,7 @@ class MovingOutEnv(BaseEnv):
         return env
 
     def _sparse_reward(self) -> float:
-        """Fraction of debris entities inside goal zone."""
+        """Fraction of items entities inside goal zone."""
         return self.sparse_rewards_for_one_step()
 
     def get_reward(self) -> float:

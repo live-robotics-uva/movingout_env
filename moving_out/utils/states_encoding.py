@@ -78,7 +78,7 @@ class StatesEncoder:
         robot_2_states = self.encode_robot(robot_2)
 
         objects_states_encoding = []
-        objects = states["debris"]
+        objects = states["items"]
 
         for i, sp in enumerate(objects):
             objects_states_encoding += self.encode_objects(sp, None)

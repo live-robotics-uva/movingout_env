@@ -143,7 +143,7 @@ def reset_env_to_id(env, map_name, add_noise_to_item=None):
         robot_2_pos=config["robot_2_pos"],
         robot_2_angle=config["robot_2_angle"],
         walls=config["walls"],
-        objects=config["objects"],
+        objects=config["items"],
         target_areas=config["target_areas"],
         target_color=config["target_color"],
     )
