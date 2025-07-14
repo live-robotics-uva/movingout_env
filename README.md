@@ -72,4 +72,3 @@ To add a custom map:
 
 For issues or contributions, feel free to open an issue or pull request on GitHub.
 
-Happy collaborating!
