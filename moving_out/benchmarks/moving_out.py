@@ -19,7 +19,7 @@ from moving_out.utils.states_encoding import StatesEncoder
 class MovingOutEnv(BaseEnv):
     def __init__(
         self,
-        use_state: bool = False,
+        use_state: bool = True,
         map_name=None,
         dense_rewards_setting=None,
         add_noise_to_item=False,

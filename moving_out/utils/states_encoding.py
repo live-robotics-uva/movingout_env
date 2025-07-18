@@ -23,10 +23,20 @@ class StatesEncoder:
             self.if_encode_object_hold = if_encode_object_hold
             self.encode_wall = encode_wall
             self.encode_target_area = encode_target_area
-            # self.maps_folder_path = os.path.join(current_file_path, "../maps/all_maps_items")
+
             self.max_number_shaps = max_number_shaps
         elif self.encoding == "image":
             pass
+        self.robot_1_obs_index = None
+        self.robot_2_obs_index = None
+
+    def get_robot_obs_index(self):
+        # This is not a good implementation; it's only for the convenience of running the code. This implementation assumes that the states of robot_1 and robot_2 are always at the very beginning when encoding the state, and that they will never change.
+        if(self.robot_1_obs_index is None):
+            print("Please encode state once to initialize the robot obs index")
+            return None, None
+        else:
+            return self.robot_1_obs_index, self.robot_2_obs_index
 
     def get_objects_feture_by_id(self, id):
         def find_and_read_json_files(id_prefix):
@@ -67,15 +77,15 @@ class StatesEncoder:
     #     env = MovingOutEnv(use_state=True, map_name = json_data[0][0]["id"])
 
     def get_state_by_current_obs_states(self, states):
-        # id = json_data["id"]
-        # original_objects_in_map = self.get_objects_feture_by_id(id)
-        # steps = json_data["step"]
-        # states = states["states"]
+
         robot_1 = states["robot_1"]
         robot_2 = states["robot_2"]
 
         robot_1_states = self.encode_robot(robot_1)
         robot_2_states = self.encode_robot(robot_2)
+
+        self.robot_1_obs_index = [0, len(robot_1_states) - 1]
+        self.robot_2_obs_index = [len(robot_1_states), len(robot_1_states) + len(robot_2_states) - 1]
 
         objects_states_encoding = []
         objects = states["items"]
@@ -123,7 +133,6 @@ class StatesEncoder:
 
     def encode_robot(self, robot):
         pos = robot["pos"]
-        # angle = (robot["angle"] + np.pi) % (2 * np.pi) - np.pi
         angle = robot["angle"]
         angle = [math.cos(angle), math.sin(angle)]
         hold = robot["hold"]
@@ -217,32 +226,14 @@ class StatesEncoder:
 
         size_encoding = self.size_onehot_encoding(size)
 
-        if self.if_encode_velocity:
-            velocity = movable_object["velocity"]
-            angular_velocity = [movable_object["angular_velocity"]]
 
-            velocity_encoding = velocity
-            angular_velocity_encoding = angular_velocity
-            # shape_encoding = []
-            # size_encoding = []
-            # angle_encoding = []
-            return (
-                pos_encoding
-                + angle_encoding
-                + hold_encoding
-                + shape_encoding
-                + size_encoding
-                + velocity_encoding
-                + angular_velocity_encoding
-            )
-        else:
-            return (
-                pos_encoding
-                + angle_encoding
-                + hold_encoding
-                + shape_encoding
-                + size_encoding
-            )
+        return (
+            pos_encoding
+            + angle_encoding
+            + hold_encoding
+            + shape_encoding
+            + size_encoding
+        )
 
 
 if __name__ == "__main__":
