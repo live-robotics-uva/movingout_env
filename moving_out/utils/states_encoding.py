@@ -124,9 +124,6 @@ class StatesEncoder:
         ]
 
     def get_state_by_json(self, json_data):
-        # id = json_data["id"]
-        # original_objects_in_map = self.get_objects_feture_by_id(id)
-        # steps = json_data["step"]
         states = json_data["states"]
 
         return self.get_state_by_current_obs_states(states)
@@ -237,8 +234,9 @@ class StatesEncoder:
 
 
 if __name__ == "__main__":
+    file_path = ""
     with open(
-        r"C:\onedrive\OneDrive - University of Virginia\MOVINGOUT_DATASET\non_expert\1000_20240926174118.json"
+        file_path
     ) as user_file:
         file_contents = user_file.read()
     parsed_json = json.loads(file_contents)[0]

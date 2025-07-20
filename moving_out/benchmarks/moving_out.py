@@ -280,12 +280,8 @@ class MovingOutEnv(BaseEnv):
         robot_2 = self._make_robot(robot_2_pos, robot_2_angle, id=2)
         self.target_color = target_color
 
-        if isinstance(target_areas[0], float):
-            target_areas_list = [target_areas]
-        else:
-            target_areas_list = target_areas
         self.__sensor_ref = []
-        for ta in target_areas_list:
+        for ta in self.target_areas:
             sensor = en.GoalRegion(
                 *ta,
                 self.target_color,

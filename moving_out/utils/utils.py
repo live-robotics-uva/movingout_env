@@ -130,7 +130,6 @@ def resultant_vector_by_direction(x, y):
 
 
 def reset_env_to_id(env, map_name, add_noise_to_item=None):
-    # folder_path = r"C:\Users\Administrator\OneDrive - University of Virginia\github\moving_out_AI\xmagical\maps\all_maps_items"
     env.map_name = map_name
     map_path = os.path.join(DEFAULT_MAP_PATH, AVAILABLE_MAPS[map_name])
     json_data = read_json_files(map_path)
