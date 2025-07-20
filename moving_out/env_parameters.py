@@ -35,6 +35,17 @@ AVAILABLE_MAPS = {
 }
 
 
+def get_map_image_path(map_name: str) -> str:
+    """Get the full path to the map image."""
+    if map_name not in AVAILABLE_MAPS:
+        raise ValueError(f"Map '{map_name}' does not exist")
+    
+    json_filename = AVAILABLE_MAPS[map_name]
+    # Replace .json with .png
+    png_filename = json_filename.replace('.json', '.png')
+    return os.path.join(DEFAULT_MAP_PATH, png_filename)
+
+
 def rgb(r: float, g: float, b: float) -> RGBTuple:
     return (r / 255.0, g / 255.0, b / 255.0)
 

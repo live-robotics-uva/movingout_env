@@ -108,9 +108,6 @@ class MovingOutEnv(BaseEnv):
                 {
                     "pos": list(shape.shape_body.position),
                     "angle": shape.shape_body.angle,
-                    "hold": shape.shape_body.hold,
-                    "velocity": list(shape.shape_body.velocity),
-                    "angular_velocity": shape.shape_body.angular_velocity,
                     "shape": shape.shape_type,
                     "size": shape.shape_category,
                     "shape_scale": shape.shape_size,
@@ -177,7 +174,7 @@ class MovingOutEnv(BaseEnv):
             self.distance_caluclation = "astar"
         return None
 
-    def update_env_by_given_state(self, states_dict):
+    def update_env_by_given_state(self, states_dict, reset = False):
         # self.reset(self.map_name)
         robot_1_pos = states_dict["states"]["robot_1"]["pos"]
         robot_1_angle = states_dict["states"]["robot_1"]["angle"]
@@ -193,19 +190,47 @@ class MovingOutEnv(BaseEnv):
             formated_objects = {}
             for obj in objects:
                 formated_objects[str(obj["id"])] = obj
+                obj["mass"] = 1 # Not the real mass, just for the reset
             return formated_objects
+        
+        if reset:
+            # Delete old entities/space.
+            self._entities = []
+            self._space = None
+            self._robots = []
 
-        formated_objects = format_objects(states_dict["states"]["items"])
-        # self.on_reset(
-        #     robot_1_pos,
-        #     robot_1_angle,
-        #     robot_2_pos,
-        #     robot_2_angle,
-        #     states_dict["states"]["walls"],
-        #     objects = formated_objects,
-        #     target_areas = states_dict["states"]["target_area"],
-        #     target_color = states_dict["states"]["target_color"],
-        # )
+            self.if_hold = [False, False]
+            self.hold_joints = [None, None]
+            self.motor_joints = [None, None]
+            self.two_robot_joints = None
+            self.shape_in_front = [None, None]
+
+            self.renderer.reset_geoms()
+
+            self._space = pm.Space()
+            self._space.collision_slop = 0.001
+            self._space.iterations = self.phys_iter
+
+            # Set up robot and arena.
+            arena_l, arena_r, arena_b, arena_t = self.ARENA_BOUNDS_LRBT
+            self._arena = en.ArenaBoundaries(
+                left=arena_l, right=arena_r, bottom=arena_b, top=arena_t
+            )
+            self._arena_w = arena_r - arena_l
+            self._arena_h = arena_t - arena_b
+            self.add_entities([self._arena])
+
+            formated_objects = format_objects(states_dict["states"]["items"])
+            self.on_reset(
+                robot_1_pos,
+                robot_1_angle,
+                robot_2_pos,
+                robot_2_angle,
+                states_dict["states"]["walls"],
+                objects = formated_objects,
+                target_areas = states_dict["states"]["target_area"],
+                target_color = states_dict["states"]["target_color"],
+            )
 
         self._robots[0].body.position = robot_1_pos
         self._robots[0].body.angle = robot_1_angle
@@ -240,12 +265,7 @@ class MovingOutEnv(BaseEnv):
                 i
             ]["angle"]
             self.__items_shapes[i].shape_body.hold = [False, False]
-            self.__items_shapes[i].shape_body.velocity = states_dict["states"][
-                "items"
-            ][i]["velocity"]
-            self.__items_shapes[i].shape_body.angular_velocity = states_dict["states"][
-                "items"
-            ][i]["angular_velocity"]
+
             self.__items_shapes[i].shape_body.body_type = pm.Body.DYNAMIC
 
         if robot_1_hold:
@@ -297,7 +317,6 @@ class MovingOutEnv(BaseEnv):
                     continue
                 objects[str(i)]["id"] = i
                 valid_shapes.append(objects[str(i)])
-
         self.__items_shapes = [
             self._make_shape(
                 shape_type=_shape["shape"],
@@ -642,23 +661,21 @@ class MovingOutEnv(BaseEnv):
     def _get_distance_to_one_target_areas(self, position, target_areas):
         def point_to_rectangle_distance(position, target_areas):
             x, y = position
-            rect_x, rect_y, w, h = target_areas
+            
+            left = target_areas[0][0]
+            right = target_areas[1][0]
+            top = target_areas[0][1]
+            bottom = target_areas[1][1]
 
-            # 矩形的四个边界
-            left = rect_x
-            right = rect_x + w
-            top = rect_y
-            bottom = rect_y - h
+            # Calculate the horizontal and vertical distance from the point to the rectangle
+            dx = max(left - x, 0, x - right)  # Shortest distance in x direction
+            dy = max(bottom - y, 0, y - top)  # Shortest distance in y direction
 
-            # 计算点到矩形的水平和垂直距离
-            dx = max(left - x, 0, x - right)  # x 方向上的最短距离
-            dy = max(bottom - y, 0, y - top)  # y 方向上的最短距离
-
-            # 如果点在矩形内，距离为 0
+            # If the point is inside the rectangle, the distance is 0
             if dx == 0 and dy == 0:
                 return 0.0
 
-            # 计算欧几里得距离
+            # Calculate Euclidean distance
             return np.sqrt(dx**2 + dy**2)
 
         start_point = tuple(position)

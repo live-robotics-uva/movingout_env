@@ -86,9 +86,9 @@ class Shape(Entity):
         # number regardless of shape type.
         self.shape_size = shape_size
         self.shape_category = shape_category
-        self.color_name = color_name
+        # self.color_name = color_name
         if isinstance(color_name, str):
-            self.color = COLORS_RGB[self.color_name]
+            self.color = COLORS_RGB[color_name]
         elif isinstance(color_name, list):
             self.color = color_name
         else:
