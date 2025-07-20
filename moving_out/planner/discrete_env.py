@@ -7,14 +7,14 @@ except:
 
 
 def preprocess_goal_region(goal_regions):
-    goal_region_converted = []
-    for goal_region in goal_regions:
-        goal_region_converted.append(
-            [
-                [goal_region[0], goal_region[1]],
-                [goal_region[0] + goal_region[2], goal_region[1] - goal_region[3]],
-            ]
-        )
+    goal_region_converted = goal_regions
+    # for goal_region in goal_regions:
+    #     goal_region_converted.append(
+    #         [
+    #             [goal_region[0], goal_region[1]],
+    #             [goal_region[0] + goal_region[2], goal_region[1] - goal_region[3]],
+    #         ]
+    #     )
     # goal_region_converted = [[
     #     [goal_region[0][0], goal_region[0][1]],
     #     [goal_region[0][0] + goal_region[0][1], goal_region[0][1] - goal_region[1][1]]

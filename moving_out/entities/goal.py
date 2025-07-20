@@ -17,8 +17,9 @@ class GoalRegion(Entity):
     def __init__(self, top_left, bottom_right, color_name, dashed=True):
         self.x = top_left[0]
         self.y = top_left[1]
-        self.h = bottom_right[1] - top_left[1]
+        self.h = top_left[1] - bottom_right[1]
         self.w = bottom_right[0] - top_left[0]
+
         assert self.h > 0, self.w > 0
         self.color_name = color_name
         self.base_color = COLORS_RGB[color_name]
