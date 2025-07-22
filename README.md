@@ -1,6 +1,6 @@
-# MovingOut Environment
+# Moving Out Environment
 
-MovingOut Environment, a physically grounded human-AI collaboration
+Moving Out Environment, a physically grounded human-AI collaboration
 
 ---
 
