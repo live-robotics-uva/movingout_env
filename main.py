@@ -71,7 +71,12 @@ class ImageDropdownSelector:
         # Calculate height - image + text + margins
         text_height = font.get_height()
         self.header_height = image_size[1] + text_height + 30  # Image height + text height + margins
-        self.dropdown_item_height = 40
+        self.dropdown_item_height = 35  # Slightly reduced height
+        
+        # Two-column layout settings
+        self.columns = 2
+        self.column_width = (width - 10) // self.columns  # Leave some padding between columns
+        self.rows_per_column = (len(options) + self.columns - 1) // self.columns  # Ceiling division
         
         # Define areas
         self.header_rect = pygame.Rect(x, y, width, self.header_height)
@@ -118,21 +123,33 @@ class ImageDropdownSelector:
             # If dropdown is expanded, check if any option was clicked
             if self.is_expanded:
                 dropdown_y = self.header_rect.bottom
-                for i, option in enumerate(self.options):
-                    option_rect = pygame.Rect(
-                        self.x, 
-                        dropdown_y + i * self.dropdown_item_height, 
-                        self.width, 
-                        self.dropdown_item_height
-                    )
-                    if option_rect.collidepoint(mouse_pos):
-                        self.selected_option = option
-                        self.is_expanded = False
-                        print(f"Selected map: {self.selected_option}")
-                        return
+                dropdown_height = self.rows_per_column * self.dropdown_item_height
+                dropdown_area = pygame.Rect(self.x, dropdown_y, self.width, dropdown_height)
                 
-                # Click outside dropdown, close menu
-                self.is_expanded = False
+                # Check if click is within dropdown area
+                if dropdown_area.collidepoint(mouse_pos):
+                    for i, option in enumerate(self.options):
+                        # Calculate column and row for two-column layout
+                        column = i // self.rows_per_column
+                        row = i % self.rows_per_column
+                        
+                        option_x = self.x + column * (self.column_width + 5)  # 5px padding between columns
+                        option_y = dropdown_y + row * self.dropdown_item_height
+                        
+                        option_rect = pygame.Rect(
+                            option_x, 
+                            option_y, 
+                            self.column_width, 
+                            self.dropdown_item_height
+                        )
+                        if option_rect.collidepoint(mouse_pos):
+                            self.selected_option = option
+                            self.is_expanded = False
+                            print(f"Selected map: {self.selected_option}")
+                            return
+                else:
+                    # Click outside dropdown area, close menu
+                    self.is_expanded = False
     
     def update(self, mouse_pos):
         # Can add hover effects here
@@ -183,18 +200,23 @@ class ImageDropdownSelector:
         # If expanded, draw dropdown options
         if self.is_expanded:
             dropdown_y = self.header_rect.bottom
-            dropdown_height = len(self.options) * self.dropdown_item_height
+            dropdown_height = self.rows_per_column * self.dropdown_item_height
             dropdown_rect = pygame.Rect(self.x, dropdown_y, self.width, dropdown_height)
             
             # Draw dropdown background
             pygame.draw.rect(screen, self.bg_color, dropdown_rect, border_radius=8)
             pygame.draw.rect(screen, self.border_color, dropdown_rect, 2, border_radius=8)
             
-            # Draw each option
+            # Draw each option in two-column layout
             mouse_pos = pygame.mouse.get_pos()
             for i, option in enumerate(self.options):
-                option_y = dropdown_y + i * self.dropdown_item_height
-                option_rect = pygame.Rect(self.x, option_y, self.width, self.dropdown_item_height)
+                # Calculate column and row for two-column layout
+                column = i // self.rows_per_column
+                row = i % self.rows_per_column
+                
+                option_x = self.x + column * (self.column_width + 5)  # 5px padding between columns
+                option_y = dropdown_y + row * self.dropdown_item_height
+                option_rect = pygame.Rect(option_x, option_y, self.column_width, self.dropdown_item_height)
                 
                 # Mouse hover effect
                 if option_rect.collidepoint(mouse_pos):
@@ -204,9 +226,9 @@ class ImageDropdownSelector:
                 if option == self.selected_option:
                     pygame.draw.rect(screen, (60, 150, 60, 100), option_rect)
                 
-                # Draw option text
+                # Draw option text with smaller font
                 text_surf = self.font.render(str(option), True, (255, 255, 255))
-                text_x = option_rect.x + 10
+                text_x = option_rect.x + 5  # Reduced padding to fit smaller columns
                 text_y = option_rect.y + (option_rect.height - text_surf.get_height()) // 2
                 screen.blit(text_surf, (text_x, text_y))
 
@@ -295,20 +317,21 @@ class App:
         self.font_title = pygame.font.Font(None, 48)
         self.font_label = pygame.font.Font(None, 36)
         self.font_option = pygame.font.Font(None, 32)
+        self.font_small = pygame.font.Font(None, 24)  # Smaller font for map options
 
-        # Map Selector - increased width for larger square images
+        # Map Selector - increased width for two-column layout
         from moving_out.env_parameters import AVAILABLE_MAPS
         # Filter to only include string keys to avoid duplication
         self.map_options = [key for key in AVAILABLE_MAPS.keys() if isinstance(key, str)]
         self.config["map"] = self.map_options[0]
-        self.map_selector = ImageDropdownSelector(50, 100, 200, self.map_options, self.font_option)
+        self.map_selector = ImageDropdownSelector(50, 100, 250, self.map_options, self.font_small)
 
         # Controller Selector - adjusted position to avoid overlap
         self.controller_options = ["Keyboard", "Joystick"]
-        self.controller_selector = OptionSelector(270, 100, self.controller_options, self.font_option)
+        self.controller_selector = OptionSelector(320, 100, self.controller_options, self.font_option)
 
         # FPS Input
-        self.fps_input = TextInputBox(270, 350, 150, 40, self.font_option)
+        self.fps_input = TextInputBox(320, 350, 150, 40, self.font_option)
         
         # Start Button
         self.start_button = Button(200, 520, 200, 50, "Start Game", self.font_label, (50, 150, 50), (80, 180, 80))
@@ -349,11 +372,11 @@ class App:
         self.map_selector.draw(self.screen)
 
         controller_label = self.font_label.render("Controller", True, (255, 255, 255))
-        self.screen.blit(controller_label, (270, 60))
+        self.screen.blit(controller_label, (320, 60))
         self.controller_selector.draw(self.screen)
 
         fps_label = self.font_label.render("FPS", True, (255, 255, 255))
-        self.screen.blit(fps_label, (270, 310))
+        self.screen.blit(fps_label, (320, 310))
         self.fps_input.draw(self.screen)
         
         self.start_button.draw(self.screen)
@@ -378,7 +401,7 @@ class App:
             
         # UI for the game screen - positioned in status bar
         self.reset_button = Button(20, GAME_AREA_HEIGHT + 30, 100, 40, "Reset", self.font_option)
-        self.config_button = Button(140, GAME_AREA_HEIGHT + 30, 80, 40, "Back", self.font_option)
+        self.config_button = Button(140, GAME_AREA_HEIGHT + 30, 140, 40, "Main Menu", self.font_option)
 
     def run_game_state(self, events):
         """Handles logic for the main game screen."""
@@ -433,7 +456,7 @@ class App:
             global_score = 0.0
             
         # Progress bar
-        progress_bar_x = 250
+        progress_bar_x = 300
         progress_bar_y = GAME_AREA_HEIGHT + 40
         progress_bar_width = 200
         progress_bar_height = 20
