@@ -113,6 +113,7 @@ class MovingOutEnv(BaseEnv):
                     "shape_scale": shape.shape_size,
                     "color": shape.color,
                     "id": shape.object_id,
+                    "hold":shape.shape_body.hold
                 }
                 for shape in self.__items_shapes
             ],
