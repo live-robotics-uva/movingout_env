@@ -17,16 +17,16 @@ def add_noise_and_clip(value, noise_scale, bound):
 
 
 def add_noise_to_robot_pose(map_config):
-    robot_1_position = map_config["0"]["robot_1_pos"]
+    robot_1_position = map_config["robot_1_pos"]
 
     robot_1_position[0] = add_noise_and_clip(robot_1_position[0], 0.1, 1.1)
     robot_1_position[1] = add_noise_and_clip(robot_1_position[1], 0.1, 1.1)
 
-    robot_1_angle = map_config["0"]["robot_1_angle"]
+    robot_1_angle = map_config["robot_1_angle"]
 
     robot_1_angle = random.uniform(-np.pi, np.pi)
 
-    robot_2_position = map_config["0"]["robot_2_pos"]
+    robot_2_position = map_config["robot_2_pos"]
 
     robot_2_position[0] = add_noise_and_clip(robot_2_position[0], 0.1, 1.1)
     robot_2_position[1] = add_noise_and_clip(robot_2_position[1], 0.1, 1.1)
@@ -35,29 +35,29 @@ def add_noise_to_robot_pose(map_config):
 
     robot_2_angle = add_noise_and_clip(robot_2_angle, 0.1, 2 * np.pi)
 
-    map_config["0"]["robot_1_pos"] = robot_1_position
-    map_config["0"]["robot_1_angle"] = robot_1_angle
-    map_config["0"]["robot_2_pos"] = robot_2_position
-    map_config["0"]["robot_2_angle"] = robot_2_angle
+    map_config["robot_1_pos"] = robot_1_position
+    map_config["robot_1_angle"] = robot_1_angle
+    map_config["robot_2_pos"] = robot_2_position
+    map_config["robot_2_angle"] = robot_2_angle
 
     return map_config
 
 
 def add_noise_to_item_pose(map_config):
-    items = map_config["0"]["objects"]
+    items = map_config["items"]
     for k, v in items.items():
         if v is None:
             continue
         items[k]["pos"][0] = add_noise_and_clip(v["pos"][0], 0.1, 1.1)
         items[k]["pos"][1] = add_noise_and_clip(v["pos"][1], 0.1, 1.1)
         items[k]["angle"] = random.uniform(-np.pi, np.pi)
-    map_config["0"]["objects"] = items
+    map_config["items"] = items
 
     return map_config
 
 
 def add_noise_to_item_shape(map_config, map_name):
-    items = map_config["0"]["objects"]
+    items = map_config["items"]
     can_not_repeat = []
     if int(map_name) >= 2000 and int(map_name) <= 2003:
         for k, v in items.items():
@@ -115,31 +115,31 @@ def add_noise_to_item_shape(map_config, map_name):
             if map_name == 2005 and items[k]["size"] == "large":
                 items[k]["shape_scale"] = 0.13
 
-    map_config["0"]["objects"] = items
+    map_config["items"] = items
 
     return map_config
 
 
 def add_noise_to_item_size(map_config):
-    items = map_config["0"]["objects"]
+    items = map_config["items"]
     for k, v in items.items():
         if v is None:
             continue
         items[k]["shape_scale"] = add_noise_and_clip(
             v["shape_scale"], v["shape_scale"] * 0.1, None
         )
-    map_config["0"]["objects"] = items
+    map_config["items"] = items
 
     return map_config
 
 
 def add_noise_to_item_mass(map_config):
-    items = map_config["0"]["objects"]
+    items = map_config["items"]
     for k, v in items.items():
         if v is None:
             continue
         items[k]["mass"] = add_noise_and_clip(v["mass"], v["mass"] * 0.1, None)
-    map_config["0"]["objects"] = items
+    map_config["items"] = items
     return map_config
 
 
@@ -160,7 +160,7 @@ def add_noise_to_map(map_config, map_name):
     #     map_config = add_noise_to_item_size(map_config)
     #     map_config = add_noise_to_item_mass(map_config)
 
-    #     print(map_config["0"])
+    #     print(map_config)
 
     # if __name__ == "__main__":
     main()

@@ -14,12 +14,13 @@ class GoalRegion(Entity):
     collision checking/scoring.
     """
 
-    def __init__(self, x, y, h, w, color_name, dashed=True):
-        self.x = x
-        self.y = y
-        assert h > 0, w > 0
-        self.h = h
-        self.w = w
+    def __init__(self, top_left, bottom_right, color_name, dashed=True):
+        self.x = top_left[0]
+        self.y = top_left[1]
+        self.h = top_left[1] - bottom_right[1]
+        self.w = bottom_right[0] - top_left[0]
+
+        assert self.h > 0, self.w > 0
         self.color_name = color_name
         self.base_color = COLORS_RGB[color_name]
         self.dashed = dashed

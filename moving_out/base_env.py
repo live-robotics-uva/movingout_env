@@ -375,19 +375,19 @@ class BaseEnv(abc.ABC):
         if self._robots[robot_id].holded_item.body.shape_category == "middle":
             self.set_body_part_movable(shape_in_front.body)
             self._robots[robot_id].if_control_angle = False
-
+        
         if (
             self.if_hold[1 - robot_id]
-            and self._robots[1 - robot_id].holded_item.body.id
-            == self._robots[robot_id].holded_item.body.id
+            and self._robots[1 - robot_id].holded_item.body.custom_id
+            == self._robots[robot_id].holded_item.body.custom_id
         ):
-            Pivot_point = (
-                np.array(
-                    self._robots[1 - robot_id].body.position
-                    + self._robots[robot_id].body.position
-                )
-                / 2.0
-            )
+            # Pivot_point = (
+            #     np.array(
+            #         self._robots[1 - robot_id].body.position
+            #         + self._robots[robot_id].body.position
+            #     )
+            #     / 2.0
+            # )
             # jointt = pm.PivotJoint(
             #     robot.body, self._robots[1-robot_id].body, list(Pivot_point)
             # )
@@ -411,8 +411,8 @@ class BaseEnv(abc.ABC):
             self._robots[robot_id].if_control_angle = True
         if (
             sum(self.if_hold) == 2
-            and self._robots[1 - robot_id].holded_item.body.id
-            == self._robots[robot_id].holded_item.body.id
+            and self._robots[1 - robot_id].holded_item.body.custom_id
+            == self._robots[robot_id].holded_item.body.custom_id
         ):
             # self._space.remove(self.two_robot_joints)
             # self.two_robot_joints = None
@@ -421,8 +421,8 @@ class BaseEnv(abc.ABC):
             self.set_body_unmovable(self._robots[robot_id].holded_item.body)
         if (
             sum(self.if_hold) == 2
-            and self._robots[1 - robot_id].holded_item.body.id
-            == self._robots[robot_id].holded_item.body.id
+            and self._robots[1 - robot_id].holded_item.body.custom_id
+            == self._robots[robot_id].holded_item.body.custom_id
             and self._robots[robot_id].holded_item.body.shape_category == "middle"
         ):
             self.set_body_part_movable(self._robots[1 - robot_id].holded_item.body)
@@ -564,8 +564,8 @@ class BaseEnv(abc.ABC):
                 and self._robots[1 - i].holded_item is not None
             ):
                 if (
-                    self._robots[i].holded_item.body.id
-                    == self._robots[1 - i].holded_item.body.id
+                    self._robots[i].holded_item.body.custom_id
+                    == self._robots[1 - i].holded_item.body.custom_id
                 ):
                     self._robots[i].move_together = True
                     self._robots[1 - i].move_together = True

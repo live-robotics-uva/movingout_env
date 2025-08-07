@@ -130,20 +130,19 @@ def resultant_vector_by_direction(x, y):
 
 
 def reset_env_to_id(env, map_name, add_noise_to_item=None):
-    # folder_path = r"C:\Users\Administrator\OneDrive - University of Virginia\github\moving_out_AI\xmagical\maps\all_maps_items"
     env.map_name = map_name
     map_path = os.path.join(DEFAULT_MAP_PATH, AVAILABLE_MAPS[map_name])
     json_data = read_json_files(map_path)
     if add_noise_to_item:
         json_data = add_noise_to_map(json_data, map_name)
-    config = json_data["0"]
+    config = json_data
     env.on_reset(
         robot_1_pos=config["robot_1_pos"],
         robot_1_angle=config["robot_1_angle"],
         robot_2_pos=config["robot_2_pos"],
         robot_2_angle=config["robot_2_angle"],
         walls=config["walls"],
-        objects=config["objects"],
+        objects=config["items"],
         target_areas=config["target_areas"],
         target_color=config["target_color"],
     )

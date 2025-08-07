@@ -52,9 +52,9 @@ if __name__ == "__main__":
 
     with open(args.map_path, "r") as file:
         data = json.load(file)
-        walls = data["0"]["walls"]
+        walls = data["walls"]
         walls = [x for x in walls if x[0] is not None]
-        goal_region = data["0"]["target_areas"]
+        goal_region = data["target_areas"]
         grid_resolution = 0.05
         X_dimensions = np.array([(-1.2, -1.2), (1.2, 1.2)])
         Obstacles = np.array(walls)
