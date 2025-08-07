@@ -20,6 +20,7 @@ AVAILABLE_MAPS = {
     "SingleRotation": "10_SingleRotation.json",
     "FourCorners": "11_FourCorners.json",
     "SequentialRotations": "12_SequentialRotations.json",
+    "Simple": "simple.json",
     1000: "1_HandOff.json",
     1001: "2_PassOrSplit.json",
     1002: "3_EfficientRoutes.json",
