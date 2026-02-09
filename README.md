@@ -68,6 +68,22 @@ To add a custom map:
 2. Create a new `.json` file describing your custom map.
 3. Add the new map name to `AVAILABLE_MAPS` in `moving_out/env_parameters.py`.
 
+---
+
+## Data Collection and Replay
+
+Collect trajectories:
+
+```bash
+python scripts/data_collector.py --map HandOff --input joystick --num 5
+```
+
+Replay a collected trajectory:
+
+```bash
+python scripts/reply_collected_trajectory.py --json_path scripts/saved_datasets/HandOff_YYYYMMDDHHMMSS.json --fps 10
+```
+
 
 
 ## Acknowledgements
