@@ -61,13 +61,7 @@ class BaseEnv(abc.ABC):
     ) -> None:
 
         view_mode = "allo"
-        self.ARENA_BOUNDS_LRBT = [
-            -arena_size[0],
-            arena_size[1],
-            -arena_size[0],
-            arena_size[1],
-        ]
-        self.ARENA_SIZE_MAX = max(self.ARENA_BOUNDS_LRBT)
+        self.reset_arena_size(arena_size)
 
         self.robot_0_cls = robot_0_cls
         self.action_0_dim = robot_0_cls.DOF
@@ -118,6 +112,15 @@ class BaseEnv(abc.ABC):
 
         self.seed()
         self.states_convetor = StatesEncoder()
+
+    def reset_arena_size(self, arena_size=[1.2, 1.2]):
+        self.ARENA_BOUNDS_LRBT = [
+            -arena_size[0],
+            arena_size[1],
+            -arena_size[0],
+            arena_size[1],
+        ]
+        self.ARENA_SIZE_MAX = max(self.ARENA_BOUNDS_LRBT)
 
     def seed(self, seed: Optional[int] = None) -> List[int]:
         """Initialise the PRNG and return seed necessary to reproduce results.
@@ -236,27 +239,7 @@ class BaseEnv(abc.ABC):
         else:
             self._phys_vars = PhysicsVariables.defaults()
 
-        # Set up robot and arena.
-        arena_l, arena_r, arena_b, arena_t = self.ARENA_BOUNDS_LRBT
-        self._arena = en.ArenaBoundaries(
-            left=arena_l, right=arena_r, bottom=arena_b, top=arena_t
-        )
-        self._arena_w = arena_r - arena_l
-        self._arena_h = arena_t - arena_b
-        self.add_entities([self._arena])
-
-        # reset_rv = self.on_reset()
-        # assert reset_rv is None, (
-        # f"on_reset method of {type(self)} returned {reset_rv}, but "
-        # f"should return None"
-        # )
-        # assert isinstance(self._robot, self.robot_0_cls)
-        # assert len(self._entities) >= 1
-
-        assert np.allclose(self._arena.left + self._arena.right, 0)
-        assert np.allclose(self._arena.bottom + self._arena.top, 0)
-
-        self._renderer_func()
+        
 
         reset_env_to_id(self, self.map_name, add_noise_to_item=add_noise_to_item)
         # return self.render(mode="rgb_array")

@@ -26,6 +26,7 @@ class MovingOutEnv(BaseEnv):
         max_episode_steps=1000,
         reward_config_name="default_rewards",
         reward_setting: str = "sparse",
+        arena_size=[1.2, 1.2],
     ) -> None:
         """Constructor.
 
@@ -39,7 +40,7 @@ class MovingOutEnv(BaseEnv):
                 goal zone.
         """
         self.states_convertor = StatesEncoder()
-        super().__init__(max_episode_steps=max_episode_steps)
+        super().__init__(max_episode_steps=max_episode_steps, arena_size=arena_size)
         self.reward_setting = reward_setting
         self.use_state = use_state
         self.dense_rewards_setting = dense_rewards_setting

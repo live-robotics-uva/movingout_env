@@ -6,7 +6,7 @@ import os
 import numpy as np
 from moving_out.env_parameters import AVAILABLE_MAPS, DEFAULT_MAP_PATH
 from moving_out.maps.add_noise_to_maps import add_noise_to_map
-
+import moving_out.entities as en
 
 class states_buffer:
     def __init__(self, length=1) -> None:
@@ -135,6 +135,21 @@ def reset_env_to_id(env, map_name, add_noise_to_item=None):
     json_data = read_json_files(map_path)
     if add_noise_to_item:
         json_data = add_noise_to_map(json_data, map_name)
+    
+    arena_size = json_data["arena_size"]
+    env.reset_arena_size(arena_size)
+    # Set up robot and arena.
+    arena_l, arena_r, arena_b, arena_t = env.ARENA_BOUNDS_LRBT
+    env._arena = en.ArenaBoundaries(
+        left=arena_l, right=arena_r, bottom=arena_b, top=arena_t
+    )
+    env._arena_w = arena_r - arena_l
+    env._arena_h = arena_t - arena_b
+    env.add_entities([env._arena])
+
+    assert np.allclose(env._arena.left + env._arena.right, 0)
+    assert np.allclose(env._arena.bottom + env._arena.top, 0)
+    env._renderer_func()
     config = json_data
     env.on_reset(
         robot_1_pos=config["robot_1_pos"],

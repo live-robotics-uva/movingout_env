@@ -1,4 +1,4 @@
-matplotlib==3.10.3
+matplotlib
 numpy
 opencv_python==4.10.0.84
 pygame==2.6.1
