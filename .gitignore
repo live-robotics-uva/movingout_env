@@ -209,4 +209,4 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-*saved_datasets*
+*saved_datasets**.distcache.npz
